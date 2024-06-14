@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 
 import os
+from datetime import timedelta
+
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -150,6 +152,13 @@ REST_FRAMEWORK = {
     },
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS": True,
+}
+
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "Train Station With Price Trip",
