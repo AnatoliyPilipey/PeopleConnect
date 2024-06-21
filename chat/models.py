@@ -23,3 +23,11 @@ class Profile(models.Model):
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"
+
+
+class Subscribe(models.Model):
+    pseudonym_id = models.IntegerField()
+    my_subscribe = models.ManyToManyField(
+        Profile,
+        related_name="subscribe"
+    )
