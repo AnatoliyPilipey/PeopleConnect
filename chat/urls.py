@@ -8,7 +8,6 @@ from chat.views import (
 
 router = routers.DefaultRouter()
 router.register("profile", ProfileViewSet)
-router.register("subscribe", SubscribeViewSet)
 
 
 urlpatterns = [path("", include(router.urls))]

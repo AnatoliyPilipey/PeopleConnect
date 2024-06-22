@@ -8,11 +8,9 @@ from chat.permissions import IsAdminOrIfAuthenticatedReadOnly
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from chat.models import (
     Profile,
-    Subscribe,
 )
 from chat.serializers import (
     ProfileSerializer,
-    SubscribeSerializer,
 )
 
 
@@ -20,11 +18,4 @@ class ProfileViewSet(viewsets.ModelViewSet):
     """Profile"""
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
-
-
-class SubscribeViewSet(viewsets.ModelViewSet):
-    """Subscribe"""
-    queryset = Subscribe.objects.all()
-    serializer_class = SubscribeSerializer
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
