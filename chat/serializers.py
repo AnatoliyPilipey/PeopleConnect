@@ -11,8 +11,24 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = (
             "id",
+            "user_id",
             "pseudonym",
             "first_name",
             "last_name",
             "image",
         )
+
+
+class ProfileCreateSerializer(ProfileSerializer):
+    class Meta:
+        model = Profile
+        fields = (
+            "id",
+            "pseudonym",
+            "first_name",
+            "last_name",
+            "image",
+        )
+
+    def create(self, validated_data):
+        return Profile.objects.create(user_id=self.context["request"].user.id, **validated_data)
