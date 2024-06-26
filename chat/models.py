@@ -13,7 +13,7 @@ def user_image_file_path(instance, filename):
 
 
 class Profile(models.Model):
-    user_id = models.IntegerField()
+    user_id = models.IntegerField(unique=True)
     pseudonym = models.CharField(max_length=65, unique=True)
     first_name = models.CharField(max_length=65)
     last_name = models.CharField(max_length=65)
