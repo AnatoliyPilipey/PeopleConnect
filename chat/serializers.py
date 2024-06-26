@@ -31,4 +31,7 @@ class ProfileCreateSerializer(ProfileSerializer):
         )
 
     def create(self, validated_data):
-        return Profile.objects.create(user_id=self.context["request"].user.id, **validated_data)
+        return Profile.objects.create(
+            user_id=self.context["request"].user.id,
+            **validated_data
+        )

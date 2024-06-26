@@ -1,5 +1,7 @@
 import os
 import uuid
+
+from django.conf import settings
 from django.db import models
 from django.utils.text import slugify
 
@@ -13,6 +15,11 @@ def user_image_file_path(instance, filename):
 
 
 class Profile(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="profile",
+    )
     user_id = models.IntegerField(unique=True)
     pseudonym = models.CharField(max_length=65, unique=True)
     first_name = models.CharField(max_length=65)
