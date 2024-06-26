@@ -17,6 +17,7 @@ class Profile(models.Model):
     pseudonym = models.CharField(max_length=65, unique=True)
     first_name = models.CharField(max_length=65)
     last_name = models.CharField(max_length=65)
+    description = models.CharField(max_length=255, null=True)
     subscribe = models.ManyToManyField(
         "self",
         blank=True
