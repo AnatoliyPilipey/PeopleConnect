@@ -11,6 +11,7 @@ from chat.models import (
 )
 from chat.serializers import (
     ProfileSerializer,
+    ProfileCreateSerializer,
 )
 
 
@@ -18,4 +19,9 @@ class ProfileViewSet(viewsets.ModelViewSet):
     """Profile"""
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_serializer_class(self):
+        if self.action == "create":
+            return ProfileCreateSerializer
+        return ProfileSerializer
