@@ -20,7 +20,6 @@ class Profile(models.Model):
         on_delete=models.CASCADE,
         related_name="profile",
     )
-    user_id = models.IntegerField(unique=True)
     pseudonym = models.CharField(max_length=65, unique=True)
     first_name = models.CharField(max_length=65)
     last_name = models.CharField(max_length=65)

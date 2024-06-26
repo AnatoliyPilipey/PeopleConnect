@@ -11,10 +11,12 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = (
             "id",
-            "user_id",
+            "user",
             "pseudonym",
             "first_name",
             "last_name",
+            "description",
+            "subscribe",
             "image",
         )
 
@@ -27,11 +29,9 @@ class ProfileCreateSerializer(ProfileSerializer):
             "pseudonym",
             "first_name",
             "last_name",
+            "description",
             "image",
         )
 
     def create(self, validated_data):
-        return Profile.objects.create(
-            user_id=self.context["request"].user.id,
-            **validated_data
-        )
+        return Profile.objects.create(**validated_data)
