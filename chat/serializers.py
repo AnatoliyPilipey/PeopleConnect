@@ -58,3 +58,15 @@ class ProfileDetailSerializer(serializers.ModelSerializer):
     def get_subscribe_me(self, obj):
         subscribe_me = obj.subscribe_me.all()
         return ProfileDetailSerializer(subscribe_me, many=True).data
+
+
+class ProfileUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = (
+            "pseudonym",
+            "first_name",
+            "last_name",
+            "description",
+            "subscribe",
+        )
