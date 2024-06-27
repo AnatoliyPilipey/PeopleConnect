@@ -154,6 +154,7 @@ REST_FRAMEWORK = {
         "user": "100/minutes"
     },
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "PAGE_SIZE": 10
 }
 
 SIMPLE_JWT = {
@@ -164,8 +165,8 @@ SIMPLE_JWT = {
 
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Train Station With Price Trip",
-    "DESCRIPTION": "Ordering tickets for rail travel",
+    "TITLE": "Social Media",
+    "DESCRIPTION": "Chat for connect people",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
     "SWAGGER_UI_SETTINGS": {

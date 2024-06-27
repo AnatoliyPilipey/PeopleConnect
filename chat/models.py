@@ -1,5 +1,7 @@
 import os
 import uuid
+
+from django.conf import settings
 from django.db import models
 from django.utils.text import slugify
 
@@ -13,9 +15,20 @@ def user_image_file_path(instance, filename):
 
 
 class Profile(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
     pseudonym = models.CharField(max_length=65, unique=True)
     first_name = models.CharField(max_length=65)
     last_name = models.CharField(max_length=65)
+    description = models.CharField(max_length=255, null=True)
+    subscribe = models.ManyToManyField(
+        "self",
+        blank=True,
+        symmetrical=False,
+        related_name="subscribe_me",
+    )
     image = models.ImageField(
         null=True,
         upload_to=user_image_file_path
@@ -23,11 +36,3 @@ class Profile(models.Model):
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"
-
-
-class Subscribe(models.Model):
-    pseudonym_id = models.IntegerField()
-    my_subscribe = models.ManyToManyField(
-        Profile,
-        related_name="subscribe"
-    )
