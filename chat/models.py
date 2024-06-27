@@ -18,7 +18,6 @@ class Profile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="profile",
     )
     pseudonym = models.CharField(max_length=65, unique=True)
     first_name = models.CharField(max_length=65)
@@ -26,7 +25,9 @@ class Profile(models.Model):
     description = models.CharField(max_length=255, null=True)
     subscribe = models.ManyToManyField(
         "self",
-        blank=True
+        blank=True,
+        symmetrical=False,
+        related_name="subscribe_me",
     )
     image = models.ImageField(
         null=True,
