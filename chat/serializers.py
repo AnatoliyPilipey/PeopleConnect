@@ -16,12 +16,12 @@ class ProfileSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "description",
-            "subscribe",
+            # "subscribe",
             "image",
         )
 
 
-class ProfileCreateSerializer(ProfileSerializer):
+class ProfileCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = (
@@ -35,3 +35,26 @@ class ProfileCreateSerializer(ProfileSerializer):
 
     def create(self, validated_data):
         return Profile.objects.create(**validated_data)
+
+
+class ProfileDetailSerializer(serializers.ModelSerializer):
+    # subscribe = serializers.SerializerMethodField()
+    # subscribe_me = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Profile
+        fields = (
+            "id",
+            "user",
+            "pseudonym",
+            "first_name",
+            "last_name",
+            "description",
+            "subscribe",
+            "subscribe_me",
+            "image",
+        )
+
+    def get_subscribe_me(self, obj):
+        subscribe_me = obj.subscribe_me.all()
+        return ProfileDetailSerializer(subscribe_me, many=True).data
