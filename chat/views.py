@@ -13,6 +13,8 @@ from chat.models import (
 from chat.serializers import (
     ProfileSerializer,
     ProfileCreateSerializer,
+    ProfileDetailSerializer,
+    ProfileUpdateSerializer,
 )
 
 
@@ -43,6 +45,10 @@ class ProfileViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action == "create":
             return ProfileCreateSerializer
+        if self.action == "retrieve":
+            return ProfileDetailSerializer
+        if self.action == "update":
+            return ProfileUpdateSerializer
         return ProfileSerializer
 
     def perform_create(self, serializer):
