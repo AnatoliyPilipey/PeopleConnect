@@ -69,6 +69,7 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
             "last_name",
             "description",
             "subscribe",
+            "image"
         )
 
 
@@ -97,7 +98,6 @@ class MessageCreateSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        print("hi")
         return Message.objects.create(
             author=Profile.objects.get(
                 pk=self.context["request"].user.pk
