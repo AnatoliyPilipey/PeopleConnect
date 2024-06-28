@@ -59,6 +59,32 @@ class ProfileViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                "pseudonym",
+                type={"type": "str"},
+                description="Filter by pseudonym User"
+                            "(ex. ?pseudonym=Ki"
+            ),
+            OpenApiParameter(
+                "description",
+                type={"type": "str"},
+                description="Filter by description User"
+                            "(ex. ?description=Ki"
+            ),
+            OpenApiParameter(
+                "name",
+                type={"type": "str"},
+                description="Filter by first_name & last_name "
+                            "(ex. ?name=Ki"
+            )
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        """Profile have more information about User"""
+        return super().list(request, *args, **kwargs)
+
 
 class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
@@ -83,12 +109,32 @@ class MessageViewSet(viewsets.ModelViewSet):
         queryset = self.queryset
         if self.action == "list":
             pseudonym = self.request.query_params.get("pseudonym")
-            text = self.request.query_params.get("name")
+            text = self.request.query_params.get("text")
             if pseudonym:
-                queryset = queryset.filter(pseudonym__icontains=pseudonym)
+                queryset = queryset.filter(author__pseudonym__icontains=pseudonym)
             if text:
                 queryset = queryset.filter(
                     Q(title__icontains=text) |
                     Q(text__icontains=text)
                 )
         return queryset
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                "pseudonym",
+                type={"type": "str"},
+                description="Filter by pseudonym User"
+                            "(ex. ?pseudonym=Ki"
+            ),
+            OpenApiParameter(
+                "text",
+                type={"type": "str"},
+                description="Filter by title & text"
+                            "(ex. ?description=Ki"
+            ),
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        """Message from Profile(User)"""
+        return super().list(request, *args, **kwargs)
