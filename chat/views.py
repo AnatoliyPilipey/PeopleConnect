@@ -78,3 +78,17 @@ class MessageViewSet(viewsets.ModelViewSet):
         if self.action == "update":
             serializer = MessageUpdateSerializer
         return serializer
+
+    def get_queryset(self):
+        queryset = self.queryset
+        if self.action == "list":
+            pseudonym = self.request.query_params.get("pseudonym")
+            text = self.request.query_params.get("name")
+            if pseudonym:
+                queryset = queryset.filter(pseudonym__icontains=pseudonym)
+            if text:
+                queryset = queryset.filter(
+                    Q(title__icontains=text) |
+                    Q(text__icontains=text)
+                )
+        return queryset
