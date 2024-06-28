@@ -1,6 +1,6 @@
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import viewsets, mixins, status
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import F, Count
@@ -9,12 +9,17 @@ from drf_spectacular.utils import extend_schema, OpenApiParameter
 from django.db.models import Q
 from chat.models import (
     Profile,
+    Message,
 )
 from chat.serializers import (
     ProfileSerializer,
     ProfileCreateSerializer,
     ProfileDetailSerializer,
     ProfileUpdateSerializer,
+    MessageSerializer,
+    MessageCreateSerializer,
+    MessageDetailSerializer,
+    MessageUpdateSerializer,
 )
 
 
@@ -53,3 +58,23 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class MessageViewSet(viewsets.ModelViewSet):
+    queryset = Message.objects.all()
+    serializer_class = MessageSerializer
+
+    def get_permissions(self):
+        if self.action != "list":
+            return [IsAuthenticated()]
+        return [AllowAny()]
+
+    def get_serializer_class(self):
+        serializer = self.serializer_class
+        if self.action == "create":
+            serializer = MessageCreateSerializer
+        if self.action == "retrieve":
+            serializer = MessageDetailSerializer
+        if self.action == "update":
+            serializer = MessageUpdateSerializer
+        return serializer
