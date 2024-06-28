@@ -3,6 +3,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from chat.models import (
     Profile,
+    Message,
 )
 
 
@@ -16,7 +17,6 @@ class ProfileSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "description",
-            # "subscribe",
             "image",
         )
 
@@ -69,4 +69,59 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
             "last_name",
             "description",
             "subscribe",
+            "image"
+        )
+
+
+class MessageSerializer(serializers.ModelSerializer):
+    author = serializers.SlugRelatedField(
+        many=False,
+        read_only=True,
+        slug_field="pseudonym",
+    )
+    class Meta:
+        model = Message
+        fields = (
+            "id",
+            "title",
+            "author",
+        )
+
+
+class MessageCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
+        fields = (
+            "title",
+            "text",
+            "image",
+        )
+
+    def create(self, validated_data):
+        return Message.objects.create(
+            author=Profile.objects.get(
+                pk=self.context["request"].user.pk
+            ),
+            **validated_data,
+        )
+
+
+class MessageDetailSerializer(MessageSerializer):
+    class Meta:
+        model = Message
+        fields = (
+            "title",
+            "author",
+            "text",
+            "image",
+        )
+
+
+class MessageUpdateSerializer(MessageSerializer):
+    class Meta:
+        model = Message
+        fields = (
+            "title",
+            "text",
+            "image",
         )
